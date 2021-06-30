@@ -3,7 +3,6 @@
 package gosession
 
 import (
-	"fmt"
 	"net/http"
 )
 
@@ -20,10 +19,11 @@ func Init(c *Cookie, s *SessionStoreOptions) *GosessionMiddleWare {
 }
 
 func (g *GosessionMiddleWare) NewGoSession(next http.Handler) http.Handler {
+	// danata
+	store := NewStoreFromOptions(g.SessionStoreOptions)
+	store.CreateSessionTable(g.SessionStoreOptions.TableName)
+
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		sessionId := g.Cookie.Value
-		fmt.Println(sessionId)
-		//Sets the session
 		if _, cookie := r.Cookie(g.Cookie.Name); cookie != nil {
 			http.SetCookie(w, NewCookieFromOptions(g.Cookie))
 		}

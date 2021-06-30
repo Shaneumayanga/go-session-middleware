@@ -17,7 +17,10 @@ func main() {
 		Secure:   true,
 		HttpOnly: true,
 		Expires:  time.Now().Add(time.Second * 60),
-	}, &gosession.SessionStoreOptions{})
+	}, &gosession.SessionStoreOptions{
+		DSN:       "root:@tcp(127.0.0.1:3306)/session?parseTime=true&loc=Local",
+		TableName: "sessions",
+	})
 
 	router := chi.NewRouter()
 	router.Use(session.NewGoSession)

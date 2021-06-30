@@ -1,9 +1,12 @@
 package gosession
 
-import "database/sql"
+import (
+	"database/sql"
+	"log"
+)
 
 type SessionStoreOptions struct {
-	Db        string
+	DSN       string
 	TableName string
 }
 
@@ -12,9 +15,21 @@ type Store struct {
 }
 
 func NewStoreFromOptions(s *SessionStoreOptions) *Store {
-	//connection := sql.Open(s.DB)
-	//Connection.exec("CREATE TABLE {tablename} (ID )")
-	return &Store{}
+	db, err := sql.Open("mysql", s.DSN)
+	if err != nil {
+		log.Fatal("Could not open the database connection")
+	}
+	return &Store{
+		Db: db,
+	}
+}
+
+func (s *Store) CreateSessionTable(tablename string) {
+	query := "CREATE TABLE IF NOT EXISTS" + tablename + "(id INT NOT NULL AUTO_INCREMENT , session_data LONGBLOB , expires_on TIMESTAMP DEFAULT NOW(), PRIMARY KEY(`id`))"
+	_, err := s.Db.Exec(query)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 }
 
 func (s *Store) CreateSession(sessionId string, tablename string) {
