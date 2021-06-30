@@ -16,6 +16,7 @@ func Init(c *Cookie, s *SessionStoreOptions) *GosessionMiddleWare {
 	// creates the session table if not exists
 	store := NewStoreFromOptions(s)
 	store.CreateSessionTable(s.TableName)
+	go RunCleanUp()
 	return &GosessionMiddleWare{
 		Cookie:              c,
 		SessionStoreOptions: s,

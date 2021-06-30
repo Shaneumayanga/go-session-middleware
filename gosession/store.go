@@ -3,6 +3,7 @@ package gosession
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"log"
 	"strings"
 	"time"
@@ -31,6 +32,7 @@ func NewStoreFromOptions(s *SessionStoreOptions) *Store {
 		log.Print(err.Error())
 		log.Fatal("Could not open the database connection")
 	}
+	log.Println("Database connected")
 	return &Store{
 		Db: db,
 	}
@@ -39,9 +41,12 @@ func NewStoreFromOptions(s *SessionStoreOptions) *Store {
 func (s *Store) CreateSessionTable(tablename string) {
 	tablename = "`" + strings.Trim(tablename, "`") + "`"
 	query := "CREATE TABLE IF NOT EXISTS" + tablename + "(id VARCHAR(255) NOT NULL , session_data LONGBLOB , expires_on TIMESTAMP DEFAULT NOW(), PRIMARY KEY(`id`))"
-	_, err := s.Db.Exec(query)
+	result, err := s.Db.Exec(query)
 	if err != nil {
 		log.Fatal(err.Error())
+	}
+	if rows, _ := result.RowsAffected(); rows > 0 {
+		fmt.Println("Session table created")
 	}
 }
 
