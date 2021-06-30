@@ -16,7 +16,7 @@ func main() {
 		Path:     "/",
 		Secure:   true,
 		HttpOnly: true,
-		Expires:  time.Now().Add(time.Second * 60),
+		Expires:  time.Now().Add(time.Hour * 10000),
 	}, &gosession.SessionStoreOptions{
 		DSN:       "root:@tcp(127.0.0.1:3306)/session?parseTime=true&loc=Local",
 		TableName: "sessions",

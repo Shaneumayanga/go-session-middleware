@@ -2,7 +2,7 @@ package gosession
 
 import (
 	"database/sql"
-	"fmt"
+	"encoding/json"
 	"log"
 	"strings"
 	"time"
@@ -45,6 +45,13 @@ func (s *Store) CreateSessionTable(tablename string) {
 	}
 }
 
-func (s *Store) CreateSession(sessionId string, tablename string, val map[string]interface{}) {
-	fmt.Print(val)
+func (s *Store) CreateSession(tablename string, sessionId string, expires_on time.Time, session_data map[string]interface{}) {
+	tablename = "`" + strings.Trim(tablename, "`") + "`"
+	query := "INSERT INTO " + tablename + " (id , session_data , expires_on)  VALUES (?,?,?)"
+	bs, _ := json.Marshal(session_data)
+	_, err := s.Db.Exec(query, sessionId, bs, expires_on)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
 }
