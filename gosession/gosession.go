@@ -19,7 +19,7 @@ func Init(c *Cookie, s *SessionStoreOptions) *GosessionMiddleWare {
 }
 
 func (g *GosessionMiddleWare) NewGoSession(next http.Handler) http.Handler {
-	// danata
+	// creates the session table if not exists
 	store := NewStoreFromOptions(g.SessionStoreOptions)
 	store.CreateSessionTable(g.SessionStoreOptions.TableName)
 
