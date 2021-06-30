@@ -54,3 +54,6 @@ func main() {
 - Get sessions
 - Delete sessions 
 - Update sessions
+
+
+#### Not intended for production

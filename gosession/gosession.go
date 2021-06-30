@@ -36,4 +36,5 @@ func (g *GosessionMiddleWare) NewGoSession(next http.Handler) http.Handler {
 
 func (g *GosessionMiddleWare) SetValue(val map[string]interface{}) {
 	g.Store.CreateSession(g.SessionStoreOptions.TableName, g.Cookie.Value, g.Cookie.Expires, val)
+
 }
