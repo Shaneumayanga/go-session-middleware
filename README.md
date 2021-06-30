@@ -53,3 +53,4 @@ func main() {
 
 - Get sessions
 - Delete sessions 
+- Update sessions
