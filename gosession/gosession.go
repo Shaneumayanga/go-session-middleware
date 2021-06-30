@@ -30,3 +30,7 @@ func (g *GosessionMiddleWare) NewGoSession(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	})
 }
+
+func (g *GosessionMiddleWare) SetValue(val map[string]interface{}) {
+
+}
