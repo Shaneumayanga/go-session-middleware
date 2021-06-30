@@ -60,3 +60,9 @@ func (s *Store) CreateSession(tablename string, sessionId string, expires_on tim
 	}
 
 }
+
+func (s *Store) GetSessionData(SessionId string) {
+	//session := Session{}
+	//query := "SELECT * FROM sessions WHERE ID = ?"
+	//result, err := s.Db.Exec(query, SessionId)
+}

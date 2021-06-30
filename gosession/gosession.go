@@ -30,11 +30,19 @@ func (g *GosessionMiddleWare) NewGoSession(next http.Handler) http.Handler {
 		if _, cookie := r.Cookie(g.Cookie.Name); cookie != nil {
 			http.SetCookie(w, NewCookieFromOptions(g.Cookie))
 		}
+		//ctx := context.WithValue(r.Context(), "data", data)
+		//next.ServeHTTP(w, r.WithContext(ctx))
 		next.ServeHTTP(w, r)
 	})
 }
 
 func (g *GosessionMiddleWare) SetValue(val map[string]interface{}) {
 	g.Store.CreateSession(g.SessionStoreOptions.TableName, g.Cookie.Value, g.Cookie.Expires, val)
+}
 
+//TODO:
+
+func (g *GosessionMiddleWare) GetSessionData() *Session {
+
+	return nil
 }
