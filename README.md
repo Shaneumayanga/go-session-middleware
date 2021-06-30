@@ -1,4 +1,4 @@
-# An awful Mysql session store implementation in golang
+# An awful Mysql session store middleware implementation in golang
 
 
 ### Example
