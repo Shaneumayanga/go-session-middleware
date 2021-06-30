@@ -2,6 +2,7 @@ package gosession
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"strings"
 	"time"
@@ -44,6 +45,6 @@ func (s *Store) CreateSessionTable(tablename string) {
 	}
 }
 
-func (s *Store) CreateSession(sessionId string, tablename string) {
-	//query := "INSERT INTO"
+func (s *Store) CreateSession(sessionId string, tablename string, val map[string]interface{}) {
+	fmt.Print(val)
 }

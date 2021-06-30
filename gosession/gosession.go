@@ -9,19 +9,22 @@ import (
 type GosessionMiddleWare struct {
 	Cookie              *Cookie
 	SessionStoreOptions *SessionStoreOptions
+	Store               *Store
 }
 
 func Init(c *Cookie, s *SessionStoreOptions) *GosessionMiddleWare {
+	// creates the session table if not exists
+	store := NewStoreFromOptions(s)
+	store.CreateSessionTable(s.TableName)
+
 	return &GosessionMiddleWare{
 		Cookie:              c,
 		SessionStoreOptions: s,
+		Store:               store,
 	}
 }
 
 func (g *GosessionMiddleWare) NewGoSession(next http.Handler) http.Handler {
-	// creates the session table if not exists
-	store := NewStoreFromOptions(g.SessionStoreOptions)
-	store.CreateSessionTable(g.SessionStoreOptions.TableName)
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if _, cookie := r.Cookie(g.Cookie.Name); cookie != nil {
@@ -32,5 +35,5 @@ func (g *GosessionMiddleWare) NewGoSession(next http.Handler) http.Handler {
 }
 
 func (g *GosessionMiddleWare) SetValue(val map[string]interface{}) {
-
+	g.Store.CreateSession(g.Cookie.Value, g.SessionStoreOptions.TableName, val)
 }
