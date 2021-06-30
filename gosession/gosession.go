@@ -23,6 +23,7 @@ func Init(c *Cookie, s *SessionStoreOptions) *GosessionMiddleWare {
 	}
 }
 
+//Returns the middleware
 func (g *GosessionMiddleWare) NewGoSession(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if _, cookie := r.Cookie(g.Cookie.Name); cookie != nil {
