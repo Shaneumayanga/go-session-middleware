@@ -1,7 +1,7 @@
 # An awful Mysql session store middleware implementation in golang
 
 
-### Example Usage
+### Example Usage : 
 
 ```go
 
