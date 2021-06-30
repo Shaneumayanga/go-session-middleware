@@ -27,10 +27,6 @@ func main() {
 	router.Get("/", func(rw http.ResponseWriter, r *http.Request) {
 		rw.Write([]byte("Hello there"))
 	})
-	router.Get("/session", func(rw http.ResponseWriter, r *http.Request) {
-		cookie, _ := r.Cookie("session")
-		rw.Write([]byte(cookie.Value))
-	})
 
 	router.Get("/set-session", func(rw http.ResponseWriter, r *http.Request) {
 		val := make(map[string]interface{})
