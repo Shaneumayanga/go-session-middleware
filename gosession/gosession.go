@@ -3,6 +3,7 @@
 package gosession
 
 import (
+	"encoding/json"
 	"net/http"
 )
 
@@ -44,5 +45,6 @@ func (g *GosessionMiddleWare) SetValue(val map[string]interface{}) {
 
 func (g *GosessionMiddleWare) GetSessionData() *SessionResponse {
 	result := g.Store.GetSessionData(g.Cookie.Value)
+	json.Unmarshal([]byte(result.Value), &result.Value)
 	return result
 }
