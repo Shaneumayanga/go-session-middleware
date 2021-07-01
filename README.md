@@ -8,6 +8,7 @@
 package main
 
 import (
+	"encoding/json"
 	"gosession/gosession"
 	"net/http"
 	"time"
@@ -19,7 +20,7 @@ func main() {
 
 	session := gosession.Init(&gosession.Cookie{
 		Name:     "session",
-		Value:    "randomsessionID",
+		Value:    "thisisthesessionId4",
 		Path:     "/",
 		Secure:   true,
 		HttpOnly: true,
@@ -34,18 +35,22 @@ func main() {
 	router.Get("/", func(rw http.ResponseWriter, r *http.Request) {
 		rw.Write([]byte("Hello there"))
 	})
-	router.Get("/session", func(rw http.ResponseWriter, r *http.Request) {
-		cookie, _ := r.Cookie("session")
-		rw.Write([]byte(cookie.Value))
-	})
 
 	router.Get("/set-session", func(rw http.ResponseWriter, r *http.Request) {
 		val := make(map[string]interface{})
 		val["name"] = "shane"
 		session.SetValue(val)
 	})
+
+	router.Get("/get-sessionData", func(rw http.ResponseWriter, r *http.Request) {
+		session_data := session.GetSessionData()
+		response, _ := json.Marshal(session_data)
+		rw.Write(response)
+	})
+
 	http.ListenAndServe(":8080", router)
 }
+
 
 ```
 

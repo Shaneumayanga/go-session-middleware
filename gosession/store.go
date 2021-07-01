@@ -22,7 +22,13 @@ type Store struct {
 
 type Session struct {
 	ID         string
-	Value      map[string]interface{}
+	Value      []uint8
+	Expires_on time.Time
+}
+
+type SessionResponse struct {
+	ID         string
+	Value      string //TODO :should be a type of JSON
 	Expires_on time.Time
 }
 
@@ -31,8 +37,8 @@ func NewStoreFromOptions(s *SessionStoreOptions) *Store {
 	if err != nil {
 		log.Print(err.Error())
 		log.Fatal("Could not open the database connection")
+		return nil
 	}
-	log.Println("Database connected")
 	return &Store{
 		Db: db,
 	}
@@ -61,8 +67,25 @@ func (s *Store) CreateSession(tablename string, sessionId string, expires_on tim
 
 }
 
-func (s *Store) GetSessionData(SessionId string) {
-	//session := Session{}
-	//query := "SELECT * FROM sessions WHERE ID = ?"
-	//result, err := s.Db.Exec(query, SessionId)
+func (s *Store) GetSessionData(SessionId string) *SessionResponse {
+	session := Session{}
+	query := "SELECT * FROM sessions WHERE ID = ?"
+	rows, err := s.Db.Query(query, SessionId)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	for rows.Next() {
+		err := rows.Scan(&session.ID, &session.Value, &session.Expires_on)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+	}
+	val := string([]byte(session.Value))
+	return &SessionResponse{
+		ID:         session.ID,
+		Value:      val,
+		Expires_on: session.Expires_on,
+	}
+
 }

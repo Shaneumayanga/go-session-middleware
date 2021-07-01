@@ -15,7 +15,9 @@ type GosessionMiddleWare struct {
 func Init(c *Cookie, s *SessionStoreOptions) *GosessionMiddleWare {
 	// creates the session table if not exists
 	store := NewStoreFromOptions(s)
-	store.CreateSessionTable(s.TableName)
+	if store != nil {
+		store.CreateSessionTable(s.TableName)
+	}
 	go RunCleanUp()
 	return &GosessionMiddleWare{
 		Cookie:              c,
@@ -40,9 +42,7 @@ func (g *GosessionMiddleWare) SetValue(val map[string]interface{}) {
 	g.Store.CreateSession(g.SessionStoreOptions.TableName, g.Cookie.Value, g.Cookie.Expires, val)
 }
 
-//TODO:
-
-func (g *GosessionMiddleWare) GetSessionData() *Session {
-
-	return nil
+func (g *GosessionMiddleWare) GetSessionData() *SessionResponse {
+	result := g.Store.GetSessionData(g.Cookie.Value)
+	return result
 }
