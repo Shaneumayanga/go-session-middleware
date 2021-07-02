@@ -92,8 +92,8 @@ func (s *Store) GetSessionData(SessionId string) *SessionResponse {
 
 func (s *Store) DeleteExpiredSession(sessionId string) {
 	data := s.GetSessionData(sessionId)
-	fmt.Print(data)
-
+	query := "DELETE * FROM sessions WHERE ID = ? AND ? > NOW()"
+	s.Db.Query(query, sessionId, data.Expires_on)
 }
 
 func (s *Store) StartCleanUP(SessionId string) {
