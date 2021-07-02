@@ -20,11 +20,11 @@ func main() {
 
 	session := gosession.Init(&gosession.Cookie{
 		Name:     "session",
-		Value:    "thisisthesessionId4",
+		Value:    "thisisthesessionId",
 		Path:     "/",
 		Secure:   true,
 		HttpOnly: true,
-		Expires:  time.Now().Add(time.Hour * 10000),
+		Expires:  time.Now().Add(time.Second * 60),
 	}, &gosession.SessionStoreOptions{
 		DSN:       "root:@tcp(127.0.0.1:3306)/session?parseTime=true&loc=Local",
 		TableName: "sessions",
@@ -52,6 +52,7 @@ func main() {
 }
 
 
+
 ```
 
 # TODO
@@ -61,4 +62,4 @@ func main() {
 - Update sessions
 
 
-#### Not intended for production
+#### Disclaimer: Not intended for production
