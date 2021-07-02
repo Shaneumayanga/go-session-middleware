@@ -19,7 +19,7 @@ func Init(c *Cookie, s *SessionStoreOptions) *GosessionMiddleWare {
 	if store != nil {
 		store.CreateSessionTable(s.TableName)
 	}
-	go RunCleanUp()
+	store.StartCleanUP(c.Value)
 	return &GosessionMiddleWare{
 		Cookie:              c,
 		SessionStoreOptions: s,

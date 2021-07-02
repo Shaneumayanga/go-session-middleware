@@ -89,3 +89,13 @@ func (s *Store) GetSessionData(SessionId string) *SessionResponse {
 	}
 
 }
+
+func (s *Store) DeleteExpiredSession(sessionId string) {
+	data := s.GetSessionData(sessionId)
+	fmt.Print(data)
+
+}
+
+func (s *Store) StartCleanUP(SessionId string) {
+	go RunCleanUp(s, SessionId)
+}
